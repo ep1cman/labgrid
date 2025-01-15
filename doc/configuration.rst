@@ -1261,6 +1261,27 @@ Arguments:
 Used by:
   - none
 
+NVIDIATopoInterface
+~~~~~~~~~~~~~~~~~~~
+A any:`NVIDIATopoInterface` resource describes a NVIDIA jetson on-board
+controller, as per: `NVIDIA Jetson Developer Guide - Board Automation <https://docs.nvidia.com/jetson/archives/r36.4.3/DeveloperGuide/AT/BoardAutomation.html>`_
+
+.. code-block:: yaml
+
+    NVIDIATopoInterface:
+        target: nv_topo
+        serial: TOPO37EE2ADD
+        index: 0
+
+Arguments:
+  - serialno (str): Serial Number of the Jetson device. (optional)
+  - index (int): Instance of debug board if there are more than one. (optional)
+  - target (str): Target board type, currently supported: pm342, nv_topo
+  - variant (str): Board variant (A00 | A01 | A02 | A03 | ...)
+  - 
+Used by:
+  - NVIDIATopoDriver
+
 Providers
 ~~~~~~~~~
 Providers describe directories that are accessible by the target over a
@@ -3277,6 +3298,31 @@ Binds to:
 
 Implements:
   - None yet
+
+Arguments:
+  - None
+
+NVIDIATopoDriver
+~~~~~~~~~~~~~~~~
+The any:`NVIDIATopoDriver` allows controlling the power and recovery mode of a Jetson Orin Nano or Jetson Orin AGX via
+the `"boardctl" <https://docs.nvidia.com/jetson/archives/r36.4.3/DeveloperGuide/AT/BoardAutomation.html>`_ tool provided
+in the Jetson Linux BSP.
+
+In order to get the tool:
+ - Visit the `Jetson Linux Archive <https://developer.nvidia.com/embedded/jetson-linux-archive>_`
+ - Click the latest release
+ - Click the "Driver Package (BSP)" link
+ - Rename the downloaded `.dms` file to a `.tar.bz2` file
+ - Extract the archive
+ - The tool will be located in `tools/board_automation/`
+
+Binds to:
+    - `NVIDIATopoInterface`_
+    - `NetworkNVIDIATopoInterface`_
+
+Implements:
+  - :any:`PowerProtocol`
+  - :any:`ResetProtocol`
 
 Arguments:
   - None
